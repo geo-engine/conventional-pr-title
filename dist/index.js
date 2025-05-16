@@ -38943,15 +38943,22 @@ try {
         'type-enum': [2, 'always', types],
         'scope-enum': [2, 'always', scopes],
         'subject-empty': [2, 'never'],
-    }).then(() => {
-        console.log(`PR title is valid!`);
+    }).then((result) => {
+        if (result.valid) {
+            console.log(`PR title is valid!`);
+        }
+        else {
+            console.log(`PR title is invalid!`);
+            console.error(`Errors: ${result.errors}`);
+            console.warn(`Warnings: ${result.warnings}`);
+            core.setFailed(`PR title is invalid!`);
+        }
     }).catch((error) => {
-        console.log(`PR title is invalid!`);
-        core.setFailed(error.message);
+        core.setFailed(`Linting failed: ${error.message}`);
     });
 }
 catch (error) {
-    core.setFailed(`Action failed: {error.message}`);
+    core.setFailed(`Action failed: ${error.message}`);
 }
 
 })();
