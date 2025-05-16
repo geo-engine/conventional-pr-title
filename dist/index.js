@@ -38927,39 +38927,47 @@ function parseInput(input) {
     }
     return inputs;
 }
-try {
+async function run() {
     const types = parseInput(core.getInput('types', { required: true }));
     const scopes = parseInput(core.getInput('scopes', { required: true }));
-    console.log(`Types: ${types}`);
-    console.log(`Scopes: ${scopes}`);
+    console.log(`Allowed types: ${types}`);
+    console.log(`Allowed scopes: ${scopes}`);
     if (!github.context.payload.pull_request) {
         throw new Error(`This action only works with pull_request events. But the event was: ${github.context.eventName}`);
     }
     console.log(`Validating PR title…`);
     const event = github.context.payload.pull_request;
     const pr_title = event.title;
-    lint(pr_title, {
+    const result = await lint(pr_title, {
         'type-empty': [2, 'never'],
         'type-enum': [2, 'always', types],
         'scope-enum': [2, 'always', scopes],
         'subject-empty': [2, 'never'],
-    }).then((result) => {
-        if (result.valid) {
-            console.log(`PR title is valid!`);
-        }
-        else {
-            console.log(`PR title is invalid!`);
-            console.error(`Errors: ${result.errors}`);
-            console.warn(`Warnings: ${result.warnings}`);
-            core.setFailed(`PR title is invalid!`);
-        }
-    }).catch((error) => {
-        core.setFailed(`Linting failed: ${error.message}`);
     });
+    if (result.valid) {
+        return;
+    }
+    if (result.errors.length > 0) {
+        console.log('Errors:');
+    }
+    for (const outcome of result.errors) {
+        console.log(`- ${outcome.name}: ${outcome.message}`);
+    }
+    if (result.warnings.length > 0) {
+        console.log('Warnings:');
+    }
+    for (const outcome of result.warnings) {
+        console.log(`- ${outcome.name}: ${outcome.message}`);
+    }
+    if (result.errors.length > 0) { // only fail if there are errors
+        core.setFailed(`PR title is invalid!`);
+    }
 }
-catch (error) {
+run().then(() => {
+    console.log(`PR title is valid!`);
+}).catch((error) => {
     core.setFailed(`Action failed: ${error.message}`);
-}
+});
 
 })();
 
