@@ -1,0 +1,16 @@
+name: 'Lint PR Title'
+description: 'Lint PR title using conventional commits format'
+
+inputs:
+  types:
+    type: string
+    required: true
+    description: 'List of allowed types for conventional commit-like title'
+  scopes:
+    type: string
+    required: true
+    description: 'List of allowed scopes for conventional commit-like titlen'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
