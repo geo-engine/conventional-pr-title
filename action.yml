@@ -11,6 +11,10 @@ inputs:
     required: true
     description: 'List of allowed scopes for conventional commit-like titlen'
 
+branding:
+  icon: 'edit-3'
+  color: 'green'
+
 runs:
   using: 'node20'
   main: 'dist/index.js'
