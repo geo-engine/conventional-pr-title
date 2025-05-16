@@ -15,7 +15,7 @@ This action helps ensure that pull request titles follow the [Conventional Commi
 ## Example usage
 
 ```yaml
-uses: geo-engine/conventional-pr-title
+uses: geo-engine/conventional-pr-title@v1
 with:
   types: [build, ci, docs, feat, fix, perf, refactor, test]
   scopes: [ascope, anotherscope]
