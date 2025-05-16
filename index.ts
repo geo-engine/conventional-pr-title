@@ -5,7 +5,7 @@ import {PullRequest} from "@octokit/webhooks-types";
 
 function parseInput(input: string): string[] {
   const inputs = [];
-  for (const item of input.split('\n')) {
+  for (const item of input.split(/\r|\n/)) {
     const trimmedItem = item.trim();
     if (trimmedItem) {
       inputs.push(trimmedItem);
@@ -17,6 +17,9 @@ function parseInput(input: string): string[] {
 try {
   const types = parseInput(core.getInput('types'));
   const scopes = parseInput(core.getInput('scopes'));
+
+  console.log(`Types: ${types}`);
+  console.log(`Scopes: ${scopes}`);
 
   if (!github.context.payload.pull_request) {
     throw new Error(`This action only works with pull_request events. But the event was: ${github.context.eventName}`);
@@ -38,8 +41,6 @@ try {
     console.log(`PR title is invalid!`);
     core.setFailed(error.message);
   });
-  
-  console.log(`PR title is valid!`);
 } catch (error) {
-  core.setFailed(error.message);
+  core.setFailed(`Action failed: {error.message}`);
 }
