@@ -3,13 +3,16 @@
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.1",
     "@commitlint/lint": "^19.8.1",
-    "@vercel/ncc": "^0.38.3"
+    "@octokit/webhooks-types": "^7.6.1",
+    "@vercel/ncc": "^0.38.3",
+    "typescript": "^5.8.3"
   },
   "name": "github-workflows",
   "version": "1.0.0",
   "description": "This action prints \"Hello World\" or \"Hello\" + the name of a person to greet to the log.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
+    "build": "ncc build index.ts -o dist --license LICENSE",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

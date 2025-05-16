@@ -1,6 +1,7 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const commitlint = require('commitlint');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import lint from "@commitlint/lint";
+import {PullRequest} from "@octokit/webhooks-types";
 
 try {
   const types = JSON.parse(core.getInput('types'));
@@ -12,15 +13,19 @@ try {
 
   console.log(`Validating PR title…`);
 
-  const pr_title = github.context.payload.pull_request.title;
+  const event = github.context.payload.pull_request as PullRequest;
+  const pr_title = event.title;
 
-  await commitlint.lint(pr_title, {
-    rules: {
+  lint(pr_title, {
       'type-empty': [2, 'never'],
       'type-enum': [2, 'always', types],
       'scope-enum': [2, 'always', scopes],
       'subject-empty': [2, 'never'],
-    },
+  }).then(() => {
+    console.log(`PR title is valid!`);
+  }).catch((error) => {
+    console.log(`PR title is invalid!`);
+    core.setFailed(error.message);
   });
   
   console.log(`PR title is valid!`);

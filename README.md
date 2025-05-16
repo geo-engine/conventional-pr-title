@@ -20,3 +20,11 @@ with:
   types: [build, ci, docs, feat, fix, perf, refactor, test]
   scopes: [ascope, anotherscope]
 ```
+
+## Development
+
+Create dist folder before committing.
+
+```sh
+npm run build
+```
