@@ -3,9 +3,20 @@ import * as github from '@actions/github';
 import lint from "@commitlint/lint";
 import {PullRequest} from "@octokit/webhooks-types";
 
+function parseInput(input: string): string[] {
+  const inputs = [];
+  for (const item of input.split('\n')) {
+    const trimmedItem = item.trim();
+    if (trimmedItem) {
+      inputs.push(trimmedItem);
+    }
+  }
+  return inputs;
+}
+
 try {
-  const types = JSON.parse(core.getInput('types'));
-  const scopes = JSON.parse(core.getInput('scopes'));
+  const types = parseInput(core.getInput('types'));
+  const scopes = parseInput(core.getInput('scopes'));
 
   if (!github.context.payload.pull_request) {
     throw new Error(`This action only works with pull_request events. But the event was: ${github.context.eventName}`);
