@@ -15,8 +15,8 @@ function parseInput(input: string): string[] {
 }
 
 try {
-  const types = parseInput(core.getInput('types'));
-  const scopes = parseInput(core.getInput('scopes'));
+  const types = parseInput(core.getInput('types', { required: true }));
+  const scopes = parseInput(core.getInput('scopes', { required: true }));
 
   console.log(`Types: ${types}`);
   console.log(`Scopes: ${scopes}`);
