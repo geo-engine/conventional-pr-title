@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: geo-engine/conventional-pr-title@dev
         with:
-          types: "[build, ci, docs, feat, fix, perf, refactor, test]"
-          scopes: "[ascope, anotherscope]"
+          types: ["build", "ci", "docs", "feat", "fix", "perf", "refactor", "test"]
+          scopes: ["ascope", "anotherscope"]
