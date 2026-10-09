@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import lint from "@commitlint/lint";
 import {PullRequest} from "@octokit/webhooks-types";
+import {lintTitle} from "./lint";
 
 function parseInput(input: string): string[] {
   const inputs = [];
@@ -30,14 +30,10 @@ async function run(): Promise<void> {
   const event = github.context.payload.pull_request as PullRequest;
   const pr_title = event.title;
 
-  const result = await lint(pr_title, {
-      'type-empty': [2, 'never'],
-      'type-enum': [2, 'always', types],
-      'scope-enum': [2, 'always', scopes],
-      'subject-empty': [2, 'never'],
-  });
+  const result = await lintTitle(pr_title, types, scopes);
 
   if (result.valid) {
+    console.log(`PR title is valid!`);
     return;
   }
 
@@ -60,8 +56,6 @@ async function run(): Promise<void> {
   }
 }
 
-run().then(() => {
-  console.log(`PR title is valid!`);
-}).catch((error) => {
+run().catch((error) => {
   core.setFailed(`Action failed: ${error.message}`);
 });
