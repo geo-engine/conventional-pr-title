@@ -2,9 +2,10 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.1",
-    "@commitlint/lint": "^19.8.1",
+    "@commitlint/lint": "^21.2.3",
     "@octokit/webhooks-types": "^7.6.1",
     "@vercel/ncc": "^0.38.3",
+    "conventional-changelog-conventionalcommits": "^10.4.1",
     "typescript": "^5.8.3"
   },
   "name": "github-workflows",
@@ -13,7 +14,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "ncc build index.ts -o dist --license LICENSE",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/geo-engine/github-workflows/issues"
   },
-  "homepage": "https://github.com/geo-engine/github-workflows#readme"
+  "homepage": "https://github.com/geo-engine/github-workflows#readme",
+  "devDependencies": {
+    "@types/node": "^24.19.1"
+  }
 }

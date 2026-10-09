@@ -21,6 +21,13 @@ with:
   scopes: [ascope, anotherscope]
 ```
 
+## Breaking changes
+
+Breaking changes can be marked with a `!` directly before the colon, as described in the specification:
+
+- `feat!: drop support for old API`
+- `feat(ascope)!: change the config format`
+
 ## Development
 
 Create dist folder before committing.
